@@ -166,9 +166,13 @@ bool KIconEngine::write(QDataStream &out) const
 
 void KIconEngine::virtual_hook(int id, void *data)
 {
+#if QT_VERSION >= QT_VERSION_CHECK(5, 7, 0)
     if (id == QIconEngine::IsNullHook) {
         *reinterpret_cast<bool*>(data) = !mIconLoader || !mIconLoader->hasIcon(mIconName);
     }
+#else
+    // FIXME: Unimplemented
+#endif
 #if QT_VERSION >= QT_VERSION_CHECK(5, 9, 0)
     if (id == QIconEngine::ScaledPixmapHook) {
         auto *info = reinterpret_cast<ScaledPixmapArgument *>(data);
